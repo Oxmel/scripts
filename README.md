@@ -1,6 +1,5 @@
 # Scripts
 
-* `import-config.sh` -- Import config files from my 'dotfiles' repo
 * `ipinfo.sh` -- Simple wrapper for ipinfo.io api. Use -h for a list of available options
 * `iptables-flush.sh` -- Delete all iptables routing rules at once
 * `lemp-wp-install.sh` -- Install and configure a LEMP stack + Wordpress on a debian server
