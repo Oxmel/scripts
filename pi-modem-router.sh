@@ -21,7 +21,7 @@ eth_name="eth0"
 # Checking if user has root privileges
 if [[ $EUID -ne 0 ]]; then
     echo "Run it as root"
-	exit
+    exit
 fi
 
 
@@ -29,10 +29,10 @@ fi
 echo "Connectivity check..."
 wget -q --tries=5 --timeout=10 --spider https://google.com > /dev/null
 if [[ $? -eq 0 ]]; then
-        echo "Passed"
+    echo "Passed"
 else
-        echo "Failed!"
-        exit
+    echo "Failed!"
+    exit
 fi
 
 # We only hide standard output, errors will still be displayed (if any)
@@ -69,10 +69,10 @@ iface $wlan_name inet dhcp
 # Provide a static ip for ethernet iface (rpi AP setup)
 allow-hotplug $eth_name
 iface $eth_name inet static
-	address 10.0.0.1
-	netmask 255.255.255.0
-	network 10.0.0.0
-	broadcast 10.0.0.255
+    address 10.0.0.1
+    netmask 255.255.255.0
+    network 10.0.0.0
+    broadcast 10.0.0.255
 
 # Apply iptables rules once interfaces are up
 post-up /etc/network/if-up.d/net-forward.sh
