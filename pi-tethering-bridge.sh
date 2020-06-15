@@ -1,18 +1,27 @@
 #!/bin/bash
 
 # Configure a Raspberry Pi as a transparent bridge to interface a tethered
-# phone (usb) to a routeur (ethernet). We then plug the Pi to the wan port of
+# phone (usb) with a routeur (ethernet). We then plug the Pi to the wan port of
 # the router to share the internet access provided by the phone.
-
-# This script is a variant of 'pi-modem-router.sh' (see my 'scripts' repo)
-# which gives the same result but uses ip forwarding instead of bridging.
-# And from my experience, if ip forwarding offers a more generic approach, it
-# can also cause latency issues due to the overhead, where bridging offers a
-# more performant and straightforward method.
-
-# Note that we use the two options 'pre-up' and 'down' to ensure that the usb
-# interface will be automatically re-added to the bridge if we unplug the phone
-# and plug it back in later on.
+#
+# This method offers couple advantages compared to ip forwarding. We don't
+# need to create iptables rules, we don't need two differents subnets, and
+# we also don't need to install and manage a dhcp server. All we have to do is
+# to create the bridge and ask the dhcp server of the phone for an address.
+#
+# Also, we can use the phone as a trigger to control the bridge dynamically with
+# the two options 'pre-up' and 'down'. So when the phone is plugged in, the
+# bridge is automatically set up and vice versa.
+#
+# On the other hand, the main problem with this setup is the fact that if the
+# phone is not connected, the Pi becomes unreachable from the local network. And
+# even if the phone is connected, the IP of the bridge may change from time to time.
+# In these conditions, trying to manage the Pi via ssh can quickly become a pain.
+#
+# One solution consists of using another network interface like a usb to ethernet
+# adapter. That way, if something goes wrong we only have to plug the adapter to
+# access the Pi again. And we can either give it a static IP or a permanent DHCP
+# lease via the router's configuration.
 
 
 echo "Adding new rules to /etc/network/interfaces"
