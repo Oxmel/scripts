@@ -28,13 +28,20 @@ echo "Adding new rules to /etc/network/interfaces"
 
 cat >> /etc/network/interfaces <<EOF
 
-# Tethering setup
+# Ethernet (built-in)
+iface eth0 inet manual
+
+# Ethernet (usb adapter)
+allow-hotplug eth1
+iface eth1 inet dhcp
+
+# Tethering
 allow-hotplug usb0
 iface usb0 inet manual
     pre-up ifup br0
     down ifdown br0
 
-# Bridge setup
+# Bridge
 iface br0 inet dhcp
     bridge_ports eth0 usb0
 EOF
