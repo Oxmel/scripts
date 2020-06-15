@@ -59,4 +59,7 @@ iface br0 inet dhcp
     bridge_ports eth0 usb0
 EOF
 
+echo "Disabling dhcpcd service"
+systemctl disable dhcpcd.service
+
 echo "Done, reboot to apply changes."
