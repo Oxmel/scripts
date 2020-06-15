@@ -24,6 +24,19 @@
 # lease via the router's configuration.
 
 
+if [[ $EUID -ne 0 ]]; then
+    echo "Run it as root"
+    exit
+fi
+
+# We could use 'iproute2' instead but 'brctl' offers a simpler syntax.
+# https://unix.stackexchange.com/a/255489/284125
+if ! command -v brctl &> /dev/null; then
+    echo "This script requires 'brctl'"
+    echo "Run 'apt install bridge-utils' to install it"
+    exit
+fi
+
 echo "Adding new rules to /etc/network/interfaces"
 
 cat >> /etc/network/interfaces <<EOF
