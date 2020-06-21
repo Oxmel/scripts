@@ -36,8 +36,8 @@ uptime=$(uptime | awk '{print $3, $4}' | sed 's/,//g')
 loadAvg=$(cat /proc/loadavg | awk '{print $1,$2,$3}')
 
 # Amount of ram used by programs only (not counting buffering and disk cache)
-memUsed=$(free -m |  awk '/buffers\/cache:/{print $3}')
 memTotal=$(free -m | awk '/Mem:/{print $2}')
+memUsed=$(free -m |  awk '/Mem:/{print $3}')
 swapTotal=$(free -m | awk '/Swap:/{print $2}')
 swapUsed=$(free -m | awk '/Swap:/{print $3}')
 
