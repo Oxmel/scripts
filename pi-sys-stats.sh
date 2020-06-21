@@ -74,13 +74,15 @@ serviceCheck() {
 
 # We use a mix of echo and printf to preserve code readability over portability
 echo
-echo "SYSTEM"
+echo "----------"
+echo "| SYSTEM |"
 echo "-----------------------------------"
 echo "uptime: ${uptime} avg: ${loadAvg}"
 echo "ram: [${memUsed}/${memTotal}MB] swap: [${swapUsed}/${swapTotal}MB]"
 
 echo
-echo "STORAGE"
+echo "-----------"
+echo "| STORAGE |"
 echo "-----------------------------------"
 (
 printf "Label\tUsed\tAvail\tTotal\tUse%%\n"
@@ -91,14 +93,16 @@ done
 ) | column -t -s $'\t'
 
 echo
-echo "INTERFACES"
+echo "--------------"
+echo "| INTERFACES |"
 echo "-----------------------------------"
 for item in ${ifaceList[@]}; do
     printf "%-30s %s\n" "$item" $(ifaceCheck $item)
 done
 
 echo
-echo 'SERVICES'
+echo "------------"
+echo "| SERVICES |"
 echo '-----------------------------------'
 for item in ${serviceList[@]}; do
     printf "%-30s %s\n" "$item" $(serviceCheck $item)
