@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#          Tested on Raspbian Jessie and Stretch (lite)
+#          Tested on Raspbian Jessie, Stretch and Buster (lite)
 #
 # The main purpose of this script is to forward the connection
 # between the two interfaces wlan0 and eth0 to turn the Pi into a
@@ -11,21 +11,21 @@
 # https://github.com/Oxmel/hotspot-connect
 
 
-# For some reason, network interfaces on raspbian stretch still use the
+# For some reason, network interfaces on raspbian buster still use the
 # old naming standards (e.g: wlan0, eth0,...). Which doesn't follow
 # the new interface naming system implemented recently on debian.
 wlan_name="wlan0"
 eth_name="eth0"
 
 
-# Checking if user has root privileges
+# Check if user has root privileges
 if [[ $EUID -ne 0 ]]; then
     echo "Run it as root"
     exit
 fi
 
 
-# Checking if internet is reachable
+# Check if internet is reachable
 echo "Connectivity check..."
 wget -q --tries=5 --timeout=10 --spider https://google.com > /dev/null
 if [[ $? -eq 0 ]]; then
@@ -35,12 +35,12 @@ else
     exit
 fi
 
-# We only hide standard output, errors will still be displayed (if any)
+# Only hide standard output, errors will still be displayed (if any)
 echo "Installing dnsmasq..."
 apt-get install dnsmasq -y > /dev/null && echo "Done" || { echo "Failed!"; exit; }
 
 
-# Setting up dhcp range for ethernet interface
+# Set up dhcp range for ethernet interface
 # Current config allows 5 machines max to be addressed via dhcp
 echo "Creating config for dnsmasq"
 cat > /etc/dnsmasq.conf <<EOF
