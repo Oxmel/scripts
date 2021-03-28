@@ -63,8 +63,10 @@ cat >> /etc/network/interfaces <<EOF
 
 # Configure wlan interface (rpi AP setup)
 allow-hotplug $wlan_name
-iface $wlan_name inet dhcp
-    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+iface $wlan_name inet manual
+    wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+
+iface default inet dhcp
 
 # Provide a static ip for ethernet iface (rpi AP setup)
 allow-hotplug $eth_name
