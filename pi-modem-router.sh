@@ -49,26 +49,20 @@ dhcp-range=10.0.0.2,10.0.0.7,255.255.255.0,12h
 EOF
 
 
-# Remove existing interface rules for eth0
 echo "Configuring interfaces"
-sed -i 's/allow-hotplug ${eth_name}//g' /etc/network/interfaces
-sed -i 's/iface ${eth_name} inet manual//g' /etc/network/interfaces
 
 
 # Prevent dhcpcd from addressing eth0
 echo "denyinterfaces $eth_name" >> /etc/dhcpcd.conf
 
 
-cat >> /etc/network/interfaces <<EOF
+# If dhcpcd detects that the main 'interfaces' file has been altered, it will
+# stop managing network interfaces. But we still need it to handle dhcp
+# requests on wlan0 so we write the custom config for eth0 in the folder
+# '/etc/network/interfaces.d' instead.
+cat >> /etc/network/interfaces.d/eth0-router <<EOF
 
-# Configure wlan interface (rpi AP setup)
-allow-hotplug $wlan_name
-iface $wlan_name inet manual
-    wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
-
-iface default inet dhcp
-
-# Provide a static ip for ethernet iface (rpi AP setup)
+# Provide a static ip for ethernet iface
 allow-hotplug $eth_name
 iface $eth_name inet static
     address 10.0.0.1
